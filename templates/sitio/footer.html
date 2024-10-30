@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital San Jorge</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        footer {
+            background: linear-gradient(135deg, #1a2a3a 0%, #2c3e50 100%);
+            color: #f8f9fa;
+            padding: 3rem 0;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+        }
+        
+        footer .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        footer .hospital-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        footer .contact-info {
+            background: rgba(255,255,255,0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+        
+        footer .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            transition: transform 0.2s;
+        }
+        
+        footer .contact-item:hover {
+            transform: translateX(5px);
+        }
+        
+        footer .social-icons {
+            display: flex;
+            gap: 1.25rem;
+        }
+        
+        footer .social-link {
+            color: #f8f9fa;
+            transition: all 0.3s ease;
+            padding: 0.5rem;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+        
+        footer .social-link:hover {
+            color: #2c3e50;
+            background: #f8f9fa;
+            transform: translateY(-3px);
+        }
+        
+        footer h4 {
+            color: #ffd700;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        footer h4::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 3px;
+            background: #ffd700;
+            border-radius: 2px;
+        }
+        
+        footer .motto {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            footer .col-md-4 {
+                margin-bottom: 2rem;
+                text-align: center;
+            }
+            
+            footer .logo-section {
+                justify-content: center;
+            }
+            
+            footer h4::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            footer .social-icons {
+                justify-content: center;
+            }
+            
+            footer .contact-info {
+                margin: 0 auto;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div style="height: 100vh; display: flex; align-items: flex-end;">
+    <footer class="w-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <div class="logo-section">
+                        <i class="bi bi-hospital text-warning" style="font-size: 2.5rem;"></i>
+                        <h3 class="hospital-name">Hospital San Jorge</h3>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h4>Contacto</h4>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="bi bi-telephone-fill"></i>
+                            <span>(606) 3119058</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="bi bi-envelope-fill"></i>
+                            <span>contacto@hospitalsanjorge.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="bi bi-geo-alt-fill"></i>
+                            <span>Cra. 4 # 24-88, Pereira, Risaralda</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <h4>Síguenos</h4>
+                    <div class="social-icons">
+                        <a href="#" class="social-link">
+                            <i class="bi bi-facebook" style="font-size: 1.5rem;"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="bi bi-twitter" style="font-size: 1.5rem;"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="bi bi-instagram" style="font-size: 1.5rem;"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="bi bi-linkedin" style="font-size: 1.5rem;"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center motto">
+                <p class="mb-0">Comprometidos con tu salud y bienestar desde 1906</p>
+            </div>
+        </div>
+    </footer>
+</div>
+
+</body>
+</html>

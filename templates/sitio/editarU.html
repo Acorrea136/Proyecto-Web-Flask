@@ -1,0 +1,42 @@
+{% include 'sitio/header.html' %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <h5 class="card-header">Formulario de edición</h5>
+                <div class="card-body">
+                    <form action="/sitio/actualizarU" method="post">
+                        <div class="mb-3">
+                            <label for="id" class="form-label">ID</label>
+                            <input type="number" class="form-control" value="{{ usuario['ID'] }}" name="ID" placeholder="ID del Usuario" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" value="{{ usuario['Username'] }}" name="Username" placeholder="Nombre del Usuario" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="cedula" class="form-label">Cédula</label>
+                          <input type="text" class="form-control" value="{{ usuario['Cedula'] }}" name="Cedula" placeholder="Cédula" required>
+                      </div>
+                        <div class="mb-3">
+                            <label for="numero" class="form-label">Número</label>
+                            <input type="text" class="form-control" value="{{ usuario['Numero'] }}" name="Numero" placeholder="Número" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="text" class="form-control" value="{{ usuario['Password'] }}" name="Password" required>
+                        </div>
+                        <button type="submit" class="btn btn-success">Actualizar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+</div>
+
+{% include 'sitio/footer.html' %}

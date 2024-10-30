@@ -1,0 +1,244 @@
+{% include 'sitio/header.html' %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital San Jorge - Atención Médica de Excelencia</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-gray: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: var(--light-gray);
+        }
+
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .hero-section {
+            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), url('/resources/Doctores.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 120px 0;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .section {
+            padding: 80px 0;
+            background-color: white;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .facility-image {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .team-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .team-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .team-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .team-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .team-name {
+            color: var(--primary-color);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-position {
+            color: var(--secondary-color);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .social-link {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin: 0 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--secondary-color);
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 3rem 0;
+        }
+    </style>
+
+    <section id="inicio" class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">Bienvenido a Hospital San Jorge</h1>
+            <p class="hero-subtitle">Tu salud es nuestra prioridad</p>
+        </div>
+    </section>
+
+    <section id="servicios" class="section">
+        <div class="container">
+            <h2 class="section-title">Nuestros Servicios</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="service-card text-center">
+                        <i class="fas fa-user-md service-icon"></i>
+                        <h3>Atención Especializada</h3>
+                        <p>Contamos con médicos especialistas en diversas áreas para brindar la mejor atención.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="service-card text-center">
+                        <i class="fas fa-heartbeat service-icon"></i>
+                        <h3>Urgencias 24/7</h3>
+                        <p>Servicio de emergencias disponible las 24 horas del día, los 7 días de la semana.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="service-card text-center">
+                        <i class="fas fa-procedures service-icon"></i>
+                        <h3>Tecnología Avanzada</h3>
+                        <p>Equipamiento médico de última generación para diagnósticos precisos y tratamientos efectivos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="instalaciones" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title">Nuestras Instalaciones</h2>
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <img src="./resources/Instalaciones.jpg" alt="Instalaciones" class="facility-image">
+                </div>
+                <div class="col-md-6">
+                    <h3>Infraestructura Moderna</h3>
+                    <p>Contamos con instalaciones de primer nivel, diseñadas para brindar la mejor atención y comodidad a nuestros pacientes.</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i>Habitaciones privadas confortables</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Quirófanos equipados con tecnología de punta</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Área de emergencias amplia y moderna</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Laboratorios especializados</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="equipo" class="section">
+        <div class="container">
+            <h2 class="section-title">Nuestro Equipo Directivo</h2>
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="team-card">
+                        <img src="./resources/Alejo.jpg" alt="Alejandro Correa" class="team-image">
+                        <div class="team-info">
+                            <h3 class="team-name">Alejandro Correa</h3>
+                            <p class="team-position">Administrador General</p>
+                            <a href="https://www.instagram.com/alejandro_correa23" class="social-link" target="_blank">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="team-card">
+                        <img src="./resources/kevin.jpg" alt="Kevin Muñoz" class="team-image">
+                        <div class="team-info">
+                            <h3 class="team-name">Kevin Muñoz</h3>
+                            <p class="team-position">Perra De la Enfermera</p>
+                            <a href="https://www.instagram.com/kev1n.munozo" class="social-link" target="_blank">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+{% include 'sitio/footer.html' %}
