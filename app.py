@@ -223,6 +223,7 @@ def actualizarU():
 
 # -------------------- Rutas de Citas --------------------
 
+
 # Ruta para visualizar el calendario de citas y agendar nuevas
 @app.route('/sitio/citas')
 @login_required
@@ -230,69 +231,83 @@ def citas():
     try:
         conexion = mysql.connection
         cursor = conexion.cursor()
-        # Obtener todas las citas existentes para el calendario
-        sql_todas_citas = "SELECT fecha, hora FROM citas"
-        cursor.execute(sql_todas_citas)
-        citas_existentes = cursor.fetchall()
-        
-        # Obtener las citas del usuario actual
+
+        # Obtener las citas del usuario actual con el nombre del doctor
         usuario_id = session['id_usuario']
-        sql_usuario_citas = "SELECT fecha, hora FROM citas WHERE usuario_id=%s"
+        sql_usuario_citas = """
+            SELECT citas.fecha, citas.hora, doctores.Username AS doctor_nombre
+            FROM citas
+            JOIN usuarios AS doctores ON citas.doctor_id = doctores.ID
+            WHERE citas.usuario_id = %s
+        """
         cursor.execute(sql_usuario_citas, (usuario_id,))
         citas_usuario = cursor.fetchall()
-        
+
+        # Obtener todas las citas existentes (para bloquear horarios)
+        sql_todas_citas = """
+            SELECT fecha, hora, doctor_id
+            FROM citas
+        """
+        cursor.execute(sql_todas_citas)
+        citas_existentes = cursor.fetchall()
+
+        # Obtener la lista de doctores
+        sql_doctores = "SELECT ID, Username FROM usuarios WHERE role_id = 2"
+        cursor.execute(sql_doctores)
+        doctores = cursor.fetchall()
+
         conexion.commit()
-        
-        # Asegurarse de que las fechas y horas son objetos datetime
-        for cita in citas_existentes:
-            if not isinstance(cita['fecha'], datetime):
-                cita['fecha'] = datetime.strptime(str(cita['fecha']), '%Y-%m-%d')
-            if not isinstance(cita['hora'], datetime):
-                cita['hora'] = datetime.strptime(str(cita['hora']), '%H:%M:%S')
-                
-        for cita in citas_usuario:
-            if not isinstance(cita['fecha'], datetime):
-                cita['fecha'] = datetime.strptime(str(cita['fecha']), '%Y-%m-%d')
-            if not isinstance(cita['hora'], datetime):
-                cita['hora'] = datetime.strptime(str(cita['hora']), '%H:%M:%S')
-        
-        return render_template('sitio/citas.html', citas=citas_existentes, citas_usuario=citas_usuario)
+
+        return render_template(
+            'sitio/citas.html',
+            citas=citas_existentes,
+            citas_usuario=citas_usuario,
+            doctores=doctores
+        )
     except Exception as e:
         print(f"Error al obtener las citas: {e}")
         flash('Ocurrió un error al cargar las citas.', 'danger')
         return redirect('/')
 
-# Ruta para manejar el formulario de agendar cita
+
+# Ruta para agendar una nueva cita
 @app.route('/sitio/agendar_cita', methods=['POST'])
 @login_required
 def agendar_cita():
     fecha = request.form['fecha']
     hora = request.form['hora']
+    doctor_id = request.form['doctor']
     usuario_id = session['id_usuario']
 
-    # Validar que la fecha y hora no estén ya ocupadas
     try:
         conexion = mysql.connection
         cursor = conexion.cursor()
-        sql_verificar = "SELECT * FROM citas WHERE fecha=%s AND hora=%s"
-        cursor.execute(sql_verificar, (fecha, hora))
+
+        # Validar que el doctor no tenga otra cita en la misma fecha y hora
+        sql_verificar = """
+            SELECT * FROM citas
+            WHERE fecha=%s AND hora=%s AND doctor_id=%s
+        """
+        cursor.execute(sql_verificar, (fecha, hora, doctor_id))
         cita_existente = cursor.fetchone()
+
         if cita_existente:
-            flash('El horario seleccionado ya está ocupado. Por favor, elige otro.', 'danger')
+            flash('El horario seleccionado ya está ocupado para este doctor. Por favor, elige otro.', 'danger')
             return redirect('/sitio/citas')
-        
+
         # Insertar la nueva cita
-        sql_insert = "INSERT INTO citas (fecha, hora, usuario_id) VALUES (%s, %s, %s)"
-        cursor.execute(sql_insert, (fecha, hora, usuario_id))
+        sql_insert = "INSERT INTO citas (fecha, hora, usuario_id, doctor_id) VALUES (%s, %s, %s, %s)"
+        cursor.execute(sql_insert, (fecha, hora, usuario_id, doctor_id))
         conexion.commit()
+
         flash('Cita agendada exitosamente.', 'success')
         return redirect('/sitio/citas')
     except Exception as e:
         print(f"Error al agendar la cita: {e}")
-        flash('Ocurrió un error al agendar la cita.', 'danger')
+        flash('Ocurrió un error al agendar la cita. Intenta nuevamente.', 'danger')
         return redirect('/sitio/citas')
 
-# Ruta para cancelar una cita (solo del usuario actual)
+# Ruta para cancelar una cita
 @app.route('/sitio/cancelar_cita/<fecha>/<hora>')
 @login_required
 def cancelar_cita(fecha, hora):
@@ -312,6 +327,63 @@ def cancelar_cita(fecha, hora):
         print(f"Error al cancelar la cita: {e}")
         flash('Ocurrió un error al cancelar la cita.', 'danger')
         return redirect('/sitio/citas')
+    
+    
+@app.route('/sitio/ajustes', methods=['GET'])
+@login_required
+def ajustes():
+    # Renderizar el formulario de cambio de contraseña
+    return render_template('sitio/ajustes.html')
+
+
+@app.route('/sitio/cambiar_contrasena', methods=['POST'])
+@login_required
+def cambiar_contrasena():
+    try:
+        # Obtener datos del formulario
+        new_password = request.form['new_password']
+        confirm_password = request.form['confirm_password']
+        current_password = request.form['current_password']  # Nuevo campo agregado
+
+        # Validar que las contraseñas coincidan
+        if new_password != confirm_password:
+            flash('Las nuevas contraseñas no coinciden.', 'danger')
+            return redirect('/sitio/ajustes')
+
+        # Validar que la nueva contraseña no esté vacía
+        if not new_password.strip():
+            flash('La nueva contraseña no puede estar vacía.', 'danger')
+            return redirect('/sitio/ajustes')
+
+        conexion = mysql.connection
+        cursor = conexion.cursor()
+
+        # Verificar la contraseña actual
+        sql_check_current_password = "SELECT * FROM usuarios WHERE ID = %s AND Password = %s"
+        cursor.execute(sql_check_current_password, (session['id_usuario'], current_password))
+        usuario = cursor.fetchone()
+
+        if not usuario:
+            flash('La contraseña actual es incorrecta.', 'danger')
+            return redirect('/sitio/ajustes')
+
+        # Actualizar contraseña en la tabla `usuarios`
+        sql_update_usuarios = "UPDATE usuarios SET Password = %s WHERE ID = %s"
+        cursor.execute(sql_update_usuarios, (new_password, session['id_usuario']))
+
+        # Confirmar cambios
+        conexion.commit()
+        flash('Contraseña actualizada exitosamente.', 'success')
+
+        return redirect('/sitio/ajustes')
+
+    except Exception as e:
+        print(f"Error general al cambiar la contraseña: {e}")
+        flash(f"Error técnico: {e}", 'danger')
+        return redirect('/sitio/ajustes')
+
+
+
 
 # -------------------- Actualización de Rol --------------------
 
@@ -432,11 +504,7 @@ def medicamentos():
     try:
         conexion = mysql.connection
         cursor = conexion.cursor()
-
-        # Obtener el usuario que ha iniciado sesión
         usuario_id = session['id_usuario']
-
-        # Filtrar los diagnósticos y medicamentos solo para el paciente conectado
         sql_medicamentos = """
             SELECT d.diagnostico, d.medicamento, c.fecha, c.hora, u.Username AS nombre_paciente, u.Numero AS numero_paciente
             FROM diagnosticos d

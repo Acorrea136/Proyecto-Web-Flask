@@ -151,8 +151,10 @@
                 <div class="text-end">
                     {% if current_user %}
                         <div class="user-profile me-3">
-                            <i class="bi bi-person-circle user-profile-icon"></i>
-                            <span>{{ current_user.Username }}</span>
+                            <button class="btn btn-link text-white text-decoration-none user-profile" onclick="window.location.href='sitio/ajustes';">
+                                <i class="bi bi-person-circle user-profile-icon"></i>
+                                <span>{{ current_user.Username }}</span>
+                            </button>
                         </div>
                         <a href="/logout" class="btn btn-danger" role="button">
                             <i class="bi bi-box-arrow-right me-1"></i>Logout
@@ -190,14 +192,18 @@
             doctor: [
                 { name: 'Citas', href: '/sitio/citas' },
                 { name: 'Consultas', href: '/sitio/Consultas' },
+                { name: 'ajustes', href: '/sitio/ajustes' },
                 { name: 'Diagnosticos', href: '/sitio/diagnosticos' }
             ],
             assistant: [
                 { name: 'Pacientes', href: '/sitio/Usuarios' },
+                { name: 'Roles', href: '/sitio/actualizarRol' },
+                { name: 'ajustes', href: '/sitio/ajustes' }
             ],
             patient: [
                 { name: 'Citas', href: '/sitio/citas' },
-                { name: 'Diagnosticos', href: '/sitio/diagnosticos' }
+                { name: 'Consultas', href: '/sitio/medicamentos' },
+                { name: 'ajustes', href: '/sitio/ajustes' }
             ]
         };
 

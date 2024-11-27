@@ -8,112 +8,186 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
+            --primary-color: #1a73e8;
+            --secondary-color: #4285f4;
+            --background-light: #f8f9fa;
+            --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .navbar {
-            background-color: var(--primary-color) !important;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 0.5rem 0;
-            margin-bottom: 0;
+        body {
+            background-color: var(--background-light);
+            color: #333;
+            line-height: 1.6;
         }
 
-        .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: white !important;
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            text-align: center;
         }
 
-        .nav-link {
-            color: white !important;
+        .main-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
         }
 
-        .form-control-dark {
-            background-color: white;
-            border-color: var(--secondary-color);
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 0.75rem;
+            border: 1px solid #dee2e6;
+            transition: all 0.3s ease;
         }
 
-        .form-control-dark:focus {
+        .form-control:focus, .form-select:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
-        }
-
-        .container {
-            margin-top: 20px;
-        }
-
-        table {
-            margin-top: 20px;
+            box-shadow: 0 0 0 0.25rem rgba(26, 115, 232, 0.25);
         }
 
         .btn-primary {
-            transition: background-color 0.3s, border-color 0.3s;
+            background-color: var(--primary-color);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
 
         .btn-primary:hover {
             background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            font-size: 1.5rem;
+        }
+
+        .table {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+
+        .table thead {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .table th {
+            font-weight: 500;
+            padding: 1rem;
+        }
+
+        .table td {
+            padding: 1rem;
+            vertical-align: middle;
+        }
+
+        .btn-danger {
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .main-card {
+                padding: 1rem;
+            }
         }
     </style>
 </head>
 <body>
     {% include 'sitio/header.html' %}
 
+    <div class="page-header">
+        <div class="container">
+            <h1>Diagnósticos de Pacientes</h1>
+            <p class="lead mb-0">Sistema de Gestión de Diagnósticos Médicos</p>
+        </div>
+    </div>
+
     <div class="container">
-        <h1 class="mt-5">Diagnósticos de Pacientes</h1>
-        <div class="row">
+        <div class="row g-4">
             <!-- Sección de Selección de Pacientes -->
-            <section class="col-md-6">
-                <h2>Seleccionar Paciente para Diagnóstico</h2>
-                <form action="{{ url_for('diagnosticos') }}" method="POST">
-                    <div class="mb-3">
-                        <label for="paciente-select" class="form-label">Seleccione una cita:</label>
-                        <select id="paciente-select" name="cita_id" class="form-select" required>
-                            <option value="" disabled selected>Seleccione una cita</option>
-                            {% for cita in citas %}
-                                <option value="{{ cita.id }}">{{ cita.nombre_paciente }} - {{ cita.fecha }} {{ cita.hora }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="diagnostico" class="form-label">Diagnóstico</label>
-                        <textarea id="diagnostico" name="diagnostico" class="form-control" placeholder="Escribe el diagnóstico" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Guardar Diagnóstico</button>
-                </form>
+            <section class="col-lg-6">
+                <div class="main-card">
+                    <h2 class="section-title">
+                        <i class="bi bi-person-plus-fill me-2"></i>Nuevo Diagnóstico
+                    </h2>
+                    <form action="{{ url_for('diagnosticos') }}" method="POST">
+                        <div class="mb-4">
+                            <label for="paciente-select" class="form-label">Seleccione una cita:</label>
+                            <select id="paciente-select" name="cita_id" class="form-select" required>
+                                <option value="" disabled selected>Seleccione una cita</option>
+                                {% for cita in citas %}
+                                    <option value="{{ cita.id }}">{{ cita.nombre_paciente }} - {{ cita.fecha }} {{ cita.hora }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label for="diagnostico" class="form-label">Diagnóstico</label>
+                            <textarea id="diagnostico" name="diagnostico" class="form-control" rows="4" placeholder="Escriba el diagnóstico detallado del paciente" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-save me-2"></i>Guardar Diagnóstico
+                        </button>
+                    </form>
+                </div>
             </section>
 
             <!-- Sección de Diagnósticos Realizados -->
-            <section class="col-md-6">
-                <h2>Diagnósticos Realizados</h2>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th scope="col">Nombre del Paciente</th>
-                            <th scope="col">Fecha de Cita</th>
-                            <th scope="col">Hora de Cita</th>
-                            <th scope="col">Diagnóstico</th>
-                            <th scope="col">Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for diag in diagnosticos %}
-                        <tr>
-                            <td>{{ diag.nombre_paciente }}</td>
-                            <td>{{ diag.fecha }}</td>
-                            <td>{{ diag.hora }}</td>
-                            <td>{{ diag.diagnostico }}</td>
-                            <td>
-                                <form action="{{ url_for('diagnosticos') }}" method="POST">
-                                    <input type="hidden" name="eliminar_diagnostico" value="{{ diag.id }}">
-                                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                                </form>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            <section class="col-lg-6">
+                <div class="main-card">
+                    <h2 class="section-title">
+                        <i class="bi bi-clipboard2-pulse-fill me-2"></i>Diagnósticos Realizados
+                    </h2>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Paciente</th>
+                                    <th>Fecha</th>
+                                    <th>Hora</th>
+                                    <th>Diagnóstico</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for diag in diagnosticos %}
+                                <tr>
+                                    <td>{{ diag.nombre_paciente }}</td>
+                                    <td>{{ diag.fecha }}</td>
+                                    <td>{{ diag.hora }}</td>
+                                    <td>{{ diag.diagnostico }}</td>
+                                    <td>
+                                        <form action="{{ url_for('diagnosticos') }}" method="POST" class="m-0">
+                                            <input type="hidden" name="eliminar_diagnostico" value="{{ diag.id }}">
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </section>
         </div>
     </div>
